@@ -3,6 +3,14 @@ import httpx
 
 app = FastAPI()
 
+# New CORS middleware setup
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 # Replace these with your actual credentials
 CLIENT_ID = "qdaiciDiyMaTjxMt"
 API_KEY = "74026b3dc2c6db6a30a73e71cdb138b1e1b5eb7a97ced46689e2d28db1050875"
