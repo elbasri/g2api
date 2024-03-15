@@ -17,6 +17,16 @@ async def fetch_product_details(prodID: str):
         response = await client.get(url, headers=headers)
 
     if response.status_code == 200:
-        return response.json()
+        response_data = response.json()
+        product_details = response_data.get('docs', [{}])[0] # Assumes first item in docs or empty dict if none
+        
+        # Extract specific fields with checks for their existence
+        details_to_return = {
+            "qty": product_details.get('qty'),
+            "minPrice": product_details.get('minPrice'),
+            "retail_min_price": product_details.get('retail_min_price'),
+            "retailMinBasePrice": product_details.get('retailMinBasePrice')
+        }
+        return details_to_return
     else:
         return {"error": f"Failed to fetch product details. Status code: {response.status_code}, Message: {response.text}"}
