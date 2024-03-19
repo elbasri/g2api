@@ -82,10 +82,10 @@ async def fetch_product_details(prodID: str, request: Request):
             if "identifiant_g2a" not in alt_data_json or "quantity_available" not in alt_data_json:
                 return {"message": "Required data not found in alternative API response."}
             
-            qty = float(alt_data_json["quantity_available"])
+            qty = round(float(alt_data_json["quantity_available"]),2)
             identif_g2a = alt_data_json["identifiant_g2a"]
-            pourcentage = float(alt_data_json["pourcentage"])
-            taux = float(alt_data_json["taux"])
+            pourcentage = round(float(alt_data_json["pourcentage"]), 2)
+            taux = round(float(alt_data_json["taux"]), 2)
 
             if qty > 0:
                 return {"message": "Sufficient stock available, not querying G2A.com."}
