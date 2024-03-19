@@ -2,12 +2,14 @@ import requests
 
 def fetch_product_details(prodID):
     # API endpoint with the specific product ID
-    url = f"https://sandboxapi.g2a.com/v1/products?id={prodID}"
+    url = f"https://api.g2a.com/v1/products?id={prodID}"
 
     # Headers including the Authorization
+    access_token = "ODDKYJRMMZUTYZLKNY0ZOTDMLTGXZTITZDU1YTY1N2JKZDG1"
     headers = {
-        "Authorization": "qdaiciDiyMaTjxMt, 74026b3dc2c6db6a30a73e71cdb138b1e1b5eb7a97ced46689e2d28db1050875"
+        'Authorization': f'Bearer {access_token}',
     }
+    
 
     # Sending GET request
     response = requests.get(url, headers=headers)
