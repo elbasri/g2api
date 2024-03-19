@@ -68,7 +68,7 @@ async def fetch_product_details(prodID: str, request: Request):
     if not referer_url:
         raise HTTPException(status_code=400, detail="Referer header is missing.")
 
-    wp_update_url = f"{referer_url.rstrip('/')}/wp-json/custom/v1/update-product/"
+    wp_update_url = f"{referer_url.rstrip('/')}/wp-json/g2a/v1/update-product/"
 
     async with httpx.AsyncClient() as client:
         alt_response = await client.post(
