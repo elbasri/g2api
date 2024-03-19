@@ -84,6 +84,8 @@ async def fetch_product_details(prodID: str, request: Request):
             
             qty = float(alt_data_json["quantity_available"])
             identif_g2a = alt_data_json["identifiant_g2a"]
+            pourcentage = float(alt_data_json["pourcentage"])
+            taux = float(alt_data_json["taux"])
 
             if qty > 0:
                 return {"message": "Sufficient stock available, not querying G2A.com."}
@@ -91,11 +93,10 @@ async def fetch_product_details(prodID: str, request: Request):
             g2a_data = await fetch_g2a_product_details(identif_g2a)
             product_details = g2a_data.get('docs', [{}])[0]
 
+            final_price = product_details.get('retail_min_price') * pourcentage * taux
             details_to_return = {
                 "qty": product_details.get('qty'),
-                "minPrice": product_details.get('minPrice'),
-                "retail_min_price": product_details.get('retail_min_price'),
-                "retailMinBasePrice": product_details.get('retailMinBasePrice'),
+                "price": final_price
             }
 
             # Update microcodes and WooCommerce with new details from G2A
@@ -103,13 +104,13 @@ async def fetch_product_details(prodID: str, request: Request):
                 'token': ALTERNATIVE_API_TOKEN,
                 'identifiant': identif_g2a,
                 'quantity': details_to_return["qty"],
-                'price': details_to_return["minPrice"],
+                'price': final_price,
             })
 
             await client.post(wp_update_url, json={
                 "sku": prodID,
                 "qty": details_to_return["qty"],
-                "price": details_to_return["minPrice"],
+                "price": final_price,
                 "token": "NCR123Tok",
             }, headers={'Content-Type': 'application/json'})
 
