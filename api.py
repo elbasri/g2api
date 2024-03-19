@@ -93,7 +93,7 @@ async def fetch_product_details(prodID: str, request: Request):
             g2a_data = await fetch_g2a_product_details(identif_g2a)
             product_details = g2a_data.get('docs', [{}])[0]
 
-            final_price = product_details.get('retail_min_price') * pourcentage * taux
+            final_price = round(product_details.get('retail_min_price') * pourcentage * taux, 2)
             details_to_return = {
                 "qty": product_details.get('qty'),
                 "price": final_price
